@@ -11,6 +11,7 @@ class EditTodoPAge extends StatefulWidget {
 }
 
 class _EditTodoPAgeState extends State<EditTodoPAge> {
+  final _formKey = GlobalKey<FormState>();
   String title;
   String description;
 
@@ -30,13 +31,16 @@ class _EditTodoPAgeState extends State<EditTodoPAge> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
-        child: TodoFormwidget(
-          title: title,
-          description: description,
-          onChangedTitle: (title) => setState(() => this.title = title),
-          onchangedDesription: (description) =>
-              setState(() => this.description = description),
-          onSavedTodo: () {},
+        child: Form(
+          key: _formKey,
+          child: TodoFormwidget(
+            title: title,
+            description: description,
+            onChangedTitle: (title) => setState(() => this.title = title),
+            onchangedDesription: (description) =>
+                setState(() => this.description = description),
+            onSavedTodo: () {},
+          ),
         ),
       ),
     );
