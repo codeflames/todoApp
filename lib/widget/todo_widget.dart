@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/provider/todos.dart';
+import 'package:todo_app/screens/edit_todo_page.dart';
 import 'package:todo_app/utils.dart';
 
 import '../model/todo_model.dart';
@@ -20,7 +21,12 @@ class TodoWidget extends StatelessWidget {
             checkColor: Colors.white,
             value: todo.isDone,
             onChanged: (_) {
-              //TODO
+              final provider =
+                  Provider.of<TodosProvider>(context, listen: false);
+              final isDone = provider.toggleTodoStatus(todo);
+
+              Utils.showSnackBar(context,
+                  isDone ? 'Task completed' : 'Task marked incomplete');
             },
           ),
           SizedBox(
@@ -68,7 +74,7 @@ class TodoWidget extends StatelessWidget {
           IconSlideAction(
             color: Colors.green,
             onTap: () {
-              //TODO
+              editTodo(context, todo);
             },
             caption: 'Edit',
             icon: Icons.edit,
@@ -92,5 +98,16 @@ class TodoWidget extends StatelessWidget {
     provider.removeTodo(todo);
 
     Utils.showSnackBar(context, 'Deleted the task');
+  }
+
+  void editTodo(BuildContext context, Todo todo) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditTodoPAge(
+          todo: todo,
+        ),
+      ),
+    );
   }
 }

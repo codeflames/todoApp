@@ -24,6 +24,10 @@ class TodosProvider extends ChangeNotifier {
 
   List<Todo> get todos => _todos.where((todo) => todo.isDone == false).toList();
 
+  List<Todo> get todosCompleted {
+    return _todos.where((element) => element.isDone == true).toList();
+  }
+
   void addTodo(Todo todo) {
     _todos.add(todo);
     notifyListeners();
@@ -32,5 +36,12 @@ class TodosProvider extends ChangeNotifier {
   void removeTodo(Todo todo) {
     _todos.remove(todo);
     notifyListeners();
+  }
+
+  bool toggleTodoStatus(Todo todo) {
+    todo.isDone = !todo.isDone;
+    notifyListeners();
+
+    return todo.isDone;
   }
 }
