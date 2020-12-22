@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/model/todo_model.dart';
+import 'package:todo_app/provider/todos.dart';
 import 'package:todo_app/widget/todo_form_widget.dart';
 
 class EditTodoPAge extends StatefulWidget {
@@ -28,6 +30,20 @@ class _EditTodoPAgeState extends State<EditTodoPAge> {
       appBar: AppBar(
         title: Text('Edit Todo'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              final provider =
+                  Provider.of<TodosProvider>(context, listen: false);
+              provider.removeTodo(widget.todo);
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -39,7 +55,25 @@ class _EditTodoPAgeState extends State<EditTodoPAge> {
             onChangedTitle: (title) => setState(() => this.title = title),
             onchangedDesription: (description) =>
                 setState(() => this.description = description),
-            onSavedTodo: () {},
+            onSavedTodo: () {
+              final isValid = _formKey.currentState.validate();
+
+              if (!isValid) {
+                return;
+              } else {
+                // final todo = Todo(
+                //   id: DateTime.now().toString(),
+                //   title: title,
+                //   description: description,
+                //   createdTime: DateTime.now(),
+                // );
+                final provider =
+                    Provider.of<TodosProvider>(context, listen: false);
+                provider.updateTodo(widget.todo, title, description);
+
+                Navigator.of(context).pop();
+              }
+            },
           ),
         ),
       ),

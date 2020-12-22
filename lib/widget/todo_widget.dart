@@ -12,53 +12,58 @@ class TodoWidget extends StatelessWidget {
   const TodoWidget({Key key, this.todo}) : super(key: key);
 
   Widget buildTodo(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Checkbox(
-            activeColor: Theme.of(context).primaryColor,
-            checkColor: Colors.white,
-            value: todo.isDone,
-            onChanged: (_) {
-              final provider =
-                  Provider.of<TodosProvider>(context, listen: false);
-              final isDone = provider.toggleTodoStatus(todo);
+    return GestureDetector(
+      onTap: () {
+        editTodo(context, todo);
+      },
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Checkbox(
+              activeColor: Theme.of(context).primaryColor,
+              checkColor: Colors.white,
+              value: todo.isDone,
+              onChanged: (_) {
+                final provider =
+                    Provider.of<TodosProvider>(context, listen: false);
+                final isDone = provider.toggleTodoStatus(todo);
 
-              Utils.showSnackBar(context,
-                  isDone ? 'Task completed' : 'Task marked incomplete');
-            },
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  todo.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 22,
-                  ),
-                ),
-                //if (todo.description.isNotEmpty)
-                Container(
-                  margin: EdgeInsets.only(top: 4),
-                  child: Text(
-                    todo.description == null ? '' : todo.description,
+                Utils.showSnackBar(context,
+                    isDone ? 'Task completed' : 'Task marked incomplete');
+              },
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    todo.title,
                     style: TextStyle(
-                      height: 1.5,
-                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 22,
                     ),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  //if (todo.description.isNotEmpty)
+                  Container(
+                    margin: EdgeInsets.only(top: 4),
+                    child: Text(
+                      todo.description == null ? '' : todo.description,
+                      style: TextStyle(
+                        height: 1.5,
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
